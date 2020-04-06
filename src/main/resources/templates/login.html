@@ -1,0 +1,38 @@
+﻿<%
+layout("/page/layout.html",{pageTitle:'登录',index:'active',pageId:'1'}){
+%>
+<!-- Page Content Wraper Area Start -->
+<section class="page-content-wrapper login-area ptb-100">
+	<div class="container">
+		<div class="row" style="display: flex;justify-content: center;">
+			<div class="col-md-6 col-lg-6 col-sm-6 res-mb-25">
+				<div class="account-info">
+					<form action="${ctxPath}/login" method="post">
+						<div class="form-fields">
+							<p>
+								<label>账户<span class="required">*</span></label>
+								<input type="text" name="username">
+							</p>
+							<p>
+								<label>密码<span class="required">*</span></label>
+								<input type="password" name="password">
+							</p>
+						</div>
+						<div style="text-align: center;color: red;font-size: 16px;margin-bottom: 10px;"><span>${loginMessage!}</span></div>
+						<div class="form-action">
+							<input value="Login" type="submit">
+						</div>
+						<div style="text-align: center;color: red;font-size: 16px;margin-bottom: 10px;">
+							<a href="${ctxPath}/register">没有账号，去注册</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Page Content Wraper Area End -->
+
+<%
+}
+%>

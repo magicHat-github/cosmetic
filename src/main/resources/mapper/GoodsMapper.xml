@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.cosmetic.dao.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.magic.cosmetic.bean.Goods">
+    <!--@mbg.generated-->
+    <!--@Table goods-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="product_analysis" jdbcType="VARCHAR" property="productAnalysis" />
+    <result column="skin_type" jdbcType="VARCHAR" property="skinType" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="standard" jdbcType="VARCHAR" property="standard" />
+    <result column="series_name" jdbcType="VARCHAR" property="seriesName" />
+    <result column="up_time" jdbcType="TIMESTAMP" property="upTime" />
+    <result column="number" jdbcType="BIGINT" property="number" />
+    <result column="remake" jdbcType="VARCHAR" property="remake" />
+    <result column="state" jdbcType="BOOLEAN" property="state" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, price, images, product_analysis, skin_type, brand, `standard`, series_name, 
+    up_time, `number`, remake, `state`, created_by, created_time, updated_by, updated_time
+  </sql>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.cosmetic.dao.GoodsRecommendMapper">
+  <resultMap id="BaseResultMap" type="com.magic.cosmetic.bean.GoodsRecommend">
+    <!--@mbg.generated-->
+    <!--@Table goods_recommend-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="goods" jdbcType="BIGINT" property="goods" />
+    <result column="like" jdbcType="INTEGER" property="like" />
+    <result column="hate" jdbcType="BIGINT" property="hate" />
+    <result column="click" jdbcType="INTEGER" property="click" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, goods, `like`, hate, click, `level`
+  </sql>
+</mapper>

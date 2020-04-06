@@ -1,0 +1,85 @@
+﻿<%
+layout("/page/layout.html",{pageTitle:'关于我们',index:'active',pageId:'1'}){
+%>
+<!-- Page Content Wraper Area Start -->
+<section class="page-content-wrapper login-area ptb-100">
+	<div class="container">
+		<div class="row">
+		   <div class="col-md-12 col-sm-12 col-xs-12">
+				<form action="#">
+					<div class="table-content table-responsive">
+						<% if(session.cart == null || session.cart.~size<=0) {%>
+						<span>暂无数据...</span>
+						<% } else { %>
+						<table>
+							<thead>
+								<tr>
+									<th class="product-thumbnail">图片</th>
+									<th class="product-name">名称</th>
+									<th class="product-price">价格</th>
+									<th class="product-quantity">数量</th>
+									<th class="product-subtotal">总数</th>
+									<th class="product-remove">删除</th>
+								</tr>
+							</thead>
+							<tbody>
+							<% for(goods in session.cart!){ %>
+								<tr>
+									<td class="product-thumbnail"><a href="#"><img src="${ctxPath}/${goods.images}" alt=""></a></td>
+									<td class="product-name"><a href="#">${goods.name}</a></td>
+									<td class="product-price"><span class="amount">$ ${goods.price}</span></td>
+									<td class="product-quantity"><span class="amount">${goods.number}</span></td>
+<!--									<input type="number" value="${goods.number}"></td>-->
+									<td class="product-subtotal">$ ${goods.price * goods.number}</td>
+									<td class="product-remove"><a href="${ctxPath}/api/deleteCart/${goods.id}?redirect=/cart"><i class="fa fa-times"></i></a></td>
+								</tr>
+							<%}%>
+							</tbody>
+						</table>
+						<%}%>
+					</div>
+					<div class="row">
+						<div class="col-md-9 col-sm-7 col-xs-12">
+							<div class="buttons-cart">
+								<a href="${ctxPath}/cart">更新购物车</a>
+								<a href="${ctxPath}/index">继续购物</a>
+							</div>
+<!--							<div class="coupon">-->
+<!--								<h3>Coupon</h3>-->
+<!--								<p>Enter your coupon code if you have one.</p>-->
+<!--								<input type="text" placeholder="Coupon code">-->
+<!--								<input type="submit" value="Apply Coupon">-->
+<!--							</div>-->
+						</div>
+						<div class="col-md-3 col-sm-5 col-xs-12">
+							<div class="cart_totals">
+								<h2>购物车金额总数</h2>
+								<table>
+									<tbody>
+										<tr class="cart-subtotal">
+											<th>原价</th>
+											<td><span class="amount">$ <% if(session.totalMoney == null) {%>0.00<%} else {%> ${session.totalMoney}<%}%></span></td>
+										</tr>
+										<tr class="order-total">
+											<th>总金额</th>
+											<td>
+												<strong><span class="amount">$ <% if(session.totalMoney == null) {%>0.00<%} else {%> ${session.totalMoney}<%}%></span></strong>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="wc-proceed-to-checkout">
+									<a href="javascript:alert('此功能还未开发！');">付款</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Page Content Wraper Area End -->
+<%
+}
+%>

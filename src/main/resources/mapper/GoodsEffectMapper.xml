@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.cosmetic.dao.GoodsEffectMapper">
+  <resultMap id="BaseResultMap" type="com.magic.cosmetic.bean.GoodsEffect">
+    <!--@mbg.generated-->
+    <!--@Table goods_effect-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="effect_id" jdbcType="BIGINT" property="effectId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, goods_id, effect_id
+  </sql>
+</mapper>

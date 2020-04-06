@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>${ConfigCompany.nameSmall}-${pageTitle}</title>
+    <meta name="description" content="神奇的化妆品网站">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="${ctxPath}/img/icon/favicon.ico">
+    <!-- Place favicon.ico in the root directory -->
+    <!-- all css here -->
+    <link rel="stylesheet" href="${ctxPath}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/elegant-font.css">
+    <link rel="stylesheet" href="${ctxPath}/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/meanmenu.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/animate.css">
+    <link rel="stylesheet" href="${ctxPath}/css/magnific-popup.css">
+    <link rel="stylesheet" href="${ctxPath}/css/animate-heading.css">
+    <link rel="stylesheet" href="${ctxPath}/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="${ctxPath}/css/shortcode/shortcodes.css">
+    <link rel="stylesheet" href="${ctxPath}/css/style.css">
+    <link rel="stylesheet" href="${ctxPath}/css/responsive.css">
+</head>
+<body>
+
+<!--[if lt IE 8]>
+<p class="browserupgrade">你的浏览器<strong>已过时</strong>. 请<a href="http://www.baidu.com/">更新</a>你的浏览器或者提升版本.</p>
+<![endif]-->
+<div style="display: flex;justify-content: space-around;font-size: 20px">
+    <div>某某毕设作业</div>
+    <div>
+        <%
+        if(session.user != null){
+        %>
+        <span>${session.user.name}</span>
+        <%}else{%>
+        <a href="${ctxPath}/login">登录</a>
+        <%}%>
+    </div>
+</div>
+
+<!-- Header Area Start -->
+<header style="margin-top: 20px;">
+    <!-- Header Menu Area -->
+    <div class="menu-area mt-60">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <div class="logo-area text-center text-uppercase">
+                        <a href="${ctxPath}/index"><img src="${ctxPath}/img/icon/logo.png" alt=""/></a>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12">
+                    <div class="main-menu lemon-bg">
+                        <ul id="nav">
+                            <li><a href="${ctxPath}/index" style="font-size: 20px">首页</a></li>
+                            <li><a href="javascript:void(0)" style="font-size: 20px">品牌 Brand</a>
+                                <ul id="brandListMode">
+                                    <%
+                                    //Ajax局部渲染开始
+                                    #ajax brandListMode:{
+                                        for(brand in brandList!){
+                                    %>
+                                    <li><a href="${ctxPath}/shopList?brand=${brand.id}"  style="font-size: 22px"><i class="arrow_carrot-right"></i>${brand.name}</a></li>
+                                    <%
+                                    }
+                                    //Ajax局部渲染结束
+                                    }
+                                    %>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0)" style="font-size: 20px">护肤 Skin care</a>
+                                <ul id="effectListMode">
+                                    <%
+                                    //Ajax局部渲染开始
+                                    #ajax effectListMode:{
+                                    for(effect in effectList!){
+                                    %>
+                                    <li><a href="${ctxPath}/shopList?effect=${effect.id}"  style="font-size: 22px"><i class="arrow_carrot-right"></i>${effect.name}</a></li>
+                                    <%
+                                    }
+                                    //Ajax局部渲染结束
+                                    }
+                                    %>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0)" style="font-size: 20px">彩妆 Makeup</a>
+                                <ul id="typeListMode">
+                                    <%
+                                    //Ajax局部渲染开始
+                                    #ajax typeListMode:{
+                                    for(type in typeList!){
+                                    %>
+                                    <li><a href="${ctxPath}/shopList?type=${type.id}"  style="font-size: 22px"><i class="arrow_carrot-right"></i>${type.name}</a></li>
+                                    <%
+                                    }
+                                    //Ajax局部渲染结束
+                                    }
+                                    %>
+                                </ul>
+                            </li>
+                            <li><a href="javascript:void(0)" style="font-size: 20px">信息 Info</a>
+                                <ul>
+                                    <li><a href="${ctxPath}/about"><i class="arrow_carrot-right"></i>关于我们</a></li>
+<!--                                    <li><a href="${ctxPath}/account"><i class="arrow_carrot-right"></i>账户</a></li>-->
+                                </ul>
+                            </li>
+                        </ul>
+                        <!-- Product Cart -->
+                        <div class="menu-right-area">
+                            <a href="#" class="mini-cart-icon">
+                                <i class="icon_cart_alt"></i>
+                                <span>
+                                    <% if(session.cart == null) {%> 0
+                                    <% } else {%>
+                                        ${session.cart.~size}
+                                    <% } %>
+                                </span>
+                            </a>
+                            <div class="top-cart-content">
+                                <% if(session.cart == null || session.cart.~size<=0) {%>
+                                <span>暂无数据...</span>
+                                <% } %>
+                                <%for(goods in session.cart!){%>
+                                <!-- Cart Single -->
+                                <div class="media header-middle-checkout">
+                                    <div class="media-left check-img">
+                                        <a href="#">
+                                            <img alt="" src="${ctxPath}/${goods.images}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body checkout-content">
+                                        <h4 class="media-heading">
+                                            <span>${goods.name}</span>
+                                            <span title="Remove This Item" class="btn-remove checkout-remove" onclick="deleteCart(${goods.id})"><i class="fa fa-trash"></i></span>
+                                        </h4>
+                                        <p>${goods.number} x $${goods.price}</p>
+                                    </div>
+                                </div>
+                                <%}%>
+                                <!-- Cart Single -->
+                                <div class="actions">
+                                    <button type="button" title="Checkout-botton" class="Checkout-botton" onclick="window.location.href='${ctxPath}/cart'">
+                                        <span>查看购物车</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Cart -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Menu Area -->
+    <!-- Header Slider Area -->
+    <div class="slider-area">
+        <div class="bend niceties preview">
+            <div id="ensign-nivoslider" class="slides">
+                <img src="${ctxPath}/img/slider/1.jpg" alt="" title="#slider-direction-1"/>
+                <img src="${ctxPath}/img/slider/2.jpg" alt="" title="#slider-direction-1"/>
+            </div>
+            <!-- direction 1 -->
+            <div id="slider-direction-1" class="slider-direction">
+                <div class="slider-content text-center s-tb slider-1">
+                    <div class="title-container s-tb-c title-compress">
+                        <h2 class="title2">
+                            <span class="icon-left" data-icon="&#x7b;"></span>
+                            独家魅力
+                            <span class="icon-right" data-icon="&#x7b;"></span>
+                        </h2>
+                        <h1 class="title1">sopzon 2020 collections</h1>
+                        <div class="slider-btn text-uppercase">
+                            <a href="#">查看全部<span class="icon-left" data-icon="&#x24;"></span></a>
+                        </div>
+                        <!-- Icon Left -->
+                        <div class="social-icon-left">
+                            <ul>
+                                <li><a href="#" class="social_facebook"></a></li>
+                                <li><a href="#" class="social_googleplus"></a></li>
+                                <li><a href="#" class="social_twitter"></a></li>
+                            </ul>
+                        </div>
+                        <!-- Icon Left -->
+                        <!-- Icon Right -->
+                        <div class="social-icon-right">
+                            <ul>
+                                <li><a href="#" class="icon_refresh"></a></li>
+                                <li><a href="#" class="icon_heart_alt"></a></li>
+                                <li><a href="#" class=" icon_search"></a></li>
+                            </ul>
+                        </div>
+                        <!-- Icon Right -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Slider Area -->
+</header>
+<!-- Header Area End -->
+
+${layoutContent}
+
+<!-- Fotter Area Start -->
+<footer>
+<%
+include("/page/footer.html"){}
+%>
+</footer>
+<!-- Fotter Area End -->
+
+<!--Quickview Product Start -->
+<div id="quickview-wrapper">
+    <!-- Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-product">
+                        <div class="product-images">
+                            <div class="main-image images">
+                                <img alt="" src="img/other/quickview.jpg">
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h1>Beauty Products</h1>
+                            <div class="price-box">
+                                <p class="price"><span class="special-price"><span class="amount">$132.00</span></span>
+                                </p>
+                            </div>
+                            <a href="product-details.html" class="see-all">See all features</a>
+                            <div class="quick-add-to-cart">
+                                <form method="post" class="cart">
+                                    <div class="numbers-row">
+                                        <input type="number" id="french-hens" value="3">
+                                    </div>
+                                    <button class="single_add_to_cart_button" type="submit">Add to cart</button>
+                                </form>
+                            </div>
+                            <div class="quick-desc">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est
+                                tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis
+                                justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id
+                                nulla.
+                            </div>
+                            <div class="social-sharing">
+                                <div class="widget widget_socialsharing_widget">
+                                    <h3 class="widget-title-modal">Share this product</h3>
+                                    <ul class="social-icons">
+                                        <li>
+                                            <a target="_blank" title="Facebook" href="#" class="facebook social-icon"><i
+                                                    class="fa fa-facebook"></i></a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" title="Twitter" href="#" class="twitter social-icon"><i
+                                                    class="fa fa-twitter"></i></a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" title="Pinterest" href="#" class="pinterest social-icon"><i
+                                                    class="fa fa-pinterest"></i></a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" title="Google +" href="#" class="gplus social-icon"><i
+                                                    class="fa fa-google-plus"></i></a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" title="LinkedIn" href="#" class="linkedin social-icon"><i
+                                                    class="fa fa-linkedin"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div><!-- .product-info -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End of Quickview Product-->
+
+<!-- all js here -->
+<script src="${ctxPath}/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="${ctxPath}/js/vendor/modernizr-2.8.3.min.js"></script>
+<script src="${ctxPath}/js/bootstrap.min.js"></script>
+<script src="${ctxPath}/js/owl.carousel.min.js"></script>
+<script src="${ctxPath}/js/isotope.pkgd.min.js"></script>
+<script src="${ctxPath}/js/jquery.nivo.slider.js"></script>
+<script src="${ctxPath}/js/price-slider.js"></script>
+<script src="${ctxPath}/js/jquery.simpleLens.min.js"></script>
+<script src="${ctxPath}/js/jquery.magnific-popup.min.js"></script>
+<script src="${ctxPath}/js/animated-heading.js"></script>
+<script src="${ctxPath}/js/jquery.ajaxchimp.min.js"></script>
+<script src="${ctxPath}/js/jquery.countdown.js"></script>
+<script src="${ctxPath}/js/jquery.meanmenu.js"></script>
+<script src="${ctxPath}/js/plugins.js"></script>
+<script src="${ctxPath}/js/main.js"></script>
+<script>
+jQuery(function(){
+    layoutAjax();
+});
+
+function layoutAjax(){
+    $.ajax({
+        url:'${ctxPath}/layout/header/brand',
+        method: 'get',
+        success:function (result) {
+            $('#brandListMode').html(result)
+        }
+    });
+    $.ajax({
+        url:'${ctxPath}/layout/header/effect',
+        method: 'get',
+        success:function (result) {
+            $('#effectListMode').html(result)
+        }
+    });
+    $.ajax({
+        url:'${ctxPath}/layout/header/type',
+        method: 'get',
+        success:function (result) {
+            $('#typeListMode').html(result)
+        }
+    });
+}
+
+function deleteCart(id){
+    window.location.href="${ctxPath}/api/deleteCart/" + id + "?redirect=/index";
+}
+
+</script>
+</body>
+</html>
+
