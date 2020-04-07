@@ -172,59 +172,33 @@ public class PageController {
                            @RequestParam(value = "type", required = false) String type,
                            @RequestParam(value = "effect", required = false) String effect,
                            HttpServletRequest request) {
-        IPage<Goods> page = new Page<>(currentPage, size);
-        LambdaQueryWrapper<Goods> lambdaQueryWrapper = Wrappers.lambdaQuery();
-        Set<String> productIds = new HashSet<>();
-        if (StringUtils.isEmpty(brand)) {
-            List<GoodsBrand> brandList = goodsBrandService.list(Wrappers.<GoodsBrand>lambdaQuery().eq(GoodsBrand::getBrandId, brand));
-            brandList.forEach(item -> productIds.add(item.getGoodsId()));
-        }
-        if (StringUtils.isEmpty(type)) {
-            List<GoodsType> typeList = goodsTypeService.list(Wrappers.<GoodsType>lambdaQuery().eq(GoodsType::getTypeId, brand));
-            typeList.forEach(item -> productIds.add(item.getGoodsId()));
-        }
-        if (StringUtils.isEmpty(effect)) {
-            List<GoodsEffect> effectList = goodsEffectService.list(Wrappers.<GoodsEffect>lambdaQuery().eq(GoodsEffect::getEffectId, brand));
-            effectList.forEach(item -> productIds.add(item.getGoodsId()));
-        }
-        if (!productIds.isEmpty()) {
-            lambdaQueryWrapper.in(Goods::getId, productIds);
-        }
-        lambdaQueryWrapper.eq(Goods::getState, STATUS_TRUE);
-        lambdaQueryWrapper.orderByDesc(Goods::getUpdatedTime);
-        request.setAttribute("goodsList", goodsService.page(page, lambdaQueryWrapper));
-        request.setAttribute("brandList", brandService.list(Wrappers.<Brand>lambdaQuery()
-                .eq(Brand::getState, STATUS_TRUE)
-                .orderByDesc(Brand::getTop)));
-        request.setAttribute("effectList", effectService.list(Wrappers.<Effect>lambdaQuery()
-                .eq(Effect::getState, STATUS_TRUE)
-                .orderByDesc(Effect::getTop)));
-        request.setAttribute("typeList", typeService.list(Wrappers.<Type>lambdaQuery()
-                .eq(Type::getState, STATUS_TRUE)
-                .orderByDesc(Type::getTop)));
+        getProductList(brand, type, effect, request);
+        request.setAttribute("brandValue", brand);
+        request.setAttribute("typeValue", type);
+        request.setAttribute("effectValue", effect);
         return "shop-list.html";
     }
 
     @GetMapping("api/addCart/{id}")
     public String addCart(@PathVariable String id, @RequestParam String redirect, HttpServletRequest request) {
         List<Goods> goodsList = (List<Goods>) request.getSession().getAttribute("cart");
-        if (goodsList == null){
+        if (goodsList == null) {
             goodsList = new ArrayList<>();
         }
         AtomicBoolean exist = new AtomicBoolean(false);
         goodsList.forEach(item -> {
-            if (item.getId().equals(id)){
+            if (item.getId().equals(id)) {
                 exist.set(true);
                 item.setNumber(item.getNumber() + 1);
             }
         });
-        if (!exist.get()){
+        if (!exist.get()) {
             Goods goods = goodsService.getById(id);
             goods.setNumber(1L);
             goodsList.add(goods);
         }
         String totalMoney = "0.00";
-        if (!goodsList.isEmpty()){
+        if (!goodsList.isEmpty()) {
             for (Goods item : goodsList) {
                 totalMoney = String.valueOf(item.getPrice().multiply(BigDecimal.valueOf(item.getNumber())));
             }
@@ -235,19 +209,19 @@ public class PageController {
     }
 
     @GetMapping("api/deleteCart/{id}")
-    public String deleteCart(@PathVariable String id, @RequestParam String redirect,  HttpServletRequest request) {
+    public String deleteCart(@PathVariable String id, @RequestParam String redirect, HttpServletRequest request) {
         List<Goods> goodsList = (List<Goods>) request.getSession().getAttribute("cart");
-        if (goodsList == null){
+        if (goodsList == null) {
             goodsList = new ArrayList<>();
         }
         List<Goods> list = new ArrayList<>(goodsList);
         for (Goods goods : list) {
-            if (goods.getId().equals(id)){
+            if (goods.getId().equals(id)) {
                 goodsList.remove(goods);
             }
         }
         String totalMoney = "0.00";
-        if (!goodsList.isEmpty()){
+        if (!goodsList.isEmpty()) {
             for (Goods item : goodsList) {
                 totalMoney = String.valueOf(item.getPrice().multiply(BigDecimal.valueOf(item.getNumber())));
             }
@@ -294,5 +268,41 @@ public class PageController {
                 .eq(Type::getState, STATUS_TRUE)
                 .orderByDesc(Type::getTop)));
         return "page/layout.html#typeListMode";
+    }
+
+    @GetMapping("api/productGrid")
+    public String productListGrid(@RequestParam(value = "pageNum", defaultValue = "1") Integer currentPage,
+                                  @RequestParam(value = "pageSize", defaultValue = "3") Integer size,
+                                  @RequestParam(value = "brand", required = false) String brand,
+                                  @RequestParam(value = "type", required = false) String type,
+                                  @RequestParam(value = "effect", required = false) String effect,
+                                  HttpServletRequest request) {
+        getProductList(brand, type, effect, request);
+        return "shop-list.html#productListModeGrid";
+    }
+
+    @GetMapping("api/productList")
+    public String productList(@RequestParam(value = "pageNum", defaultValue = "1") Integer currentPage,
+                              @RequestParam(value = "pageSize", defaultValue = "3") Integer size,
+                              @RequestParam(value = "brand", required = false) String brand,
+                              @RequestParam(value = "type", required = false) String type,
+                              @RequestParam(value = "effect", required = false) String effect,
+                              HttpServletRequest request) {
+        getProductList(brand, type, effect, request);
+        return "shop-list.html#productListMode";
+    }
+
+    private void getProductList(String brand, String type, String effect, HttpServletRequest request) {
+        List<Goods> goodsList = goodsService.getListByCondition(brand, type, effect);
+        request.setAttribute("goodsList", goodsList);
+        request.setAttribute("brandList", brandService.list(Wrappers.<Brand>lambdaQuery()
+                .eq(Brand::getState, STATUS_TRUE)
+                .orderByDesc(Brand::getTop)));
+        request.setAttribute("effectList", effectService.list(Wrappers.<Effect>lambdaQuery()
+                .eq(Effect::getState, STATUS_TRUE)
+                .orderByDesc(Effect::getTop)));
+        request.setAttribute("typeList", typeService.list(Wrappers.<Type>lambdaQuery()
+                .eq(Type::getState, STATUS_TRUE)
+                .orderByDesc(Type::getTop)));
     }
 }

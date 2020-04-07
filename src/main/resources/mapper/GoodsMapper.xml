@@ -27,4 +27,20 @@
     id, `name`, price, images, product_analysis, skin_type, brand, `standard`, series_name, 
     up_time, `number`, remake, `state`, created_by, created_time, updated_by, updated_time
   </sql>
+
+  <select id="getListByCondition" resultMap="BaseResultMap">
+    select distinct g.* from goods g join goods_brand gb on g.id = gb.goods_id join brand b on gb.brand_id = b.id
+                                 join goods_effect ge on g.id = ge.goods_id join effect e on ge.effect_id = e.id
+                                 join goods_type gt on g.id = gt.goods_id join type t on gt.type_id = t.id
+    where 1=1
+    <if test="param1!=null and param1!=''">
+      AND b.id = #{param1}
+    </if>
+    <if test="param2!=null and param2!=''">
+      AND t.id = #{param2}
+    </if>
+    <if test="param3!=null and param3!=''">
+      AND e.id = #{param3}
+    </if>
+  </select>
 </mapper>

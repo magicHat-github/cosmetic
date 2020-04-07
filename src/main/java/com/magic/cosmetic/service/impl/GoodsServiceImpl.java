@@ -15,5 +15,12 @@ import com.magic.cosmetic.service.GoodsService;
 @Service
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
+    @Resource
+    private GoodsMapper goodsMapper;
+
+    @Override
+    public List<Goods> getListByCondition(String brand, String type, String effect) {
+        return goodsMapper.getListByCondition(brand, type, effect);
+    }
 }
 
